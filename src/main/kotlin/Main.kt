@@ -29,10 +29,11 @@ fun main() {
             try {
                 val posts = getPosts(client)
                     .map { post ->
-                        async {
-                            PostWithComments_Author(post, getComments(client, post.id),getAuthor(client, post.authorId))
-                        }
-                    }.awaitAll()
+
+                        val comments = async { getComments(client, post.id) }
+                        val author = async { getAuthor(client, post.authorId) }
+                        PostWithCommentsAuthor(post, comments.await(), author.await())
+                    }
                 println(posts)
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -116,7 +117,7 @@ data class Author(
     val avatar: String,
 )
 
-data class PostWithComments_Author(
+data class PostWithCommentsAuthor(
     val post: Post,
     val comments: List<Comment>,
     val author: Author,
