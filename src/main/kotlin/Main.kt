@@ -30,8 +30,7 @@ fun main() {
                 val posts = getPosts(client)
                     .map { post ->
                         async {
-                            PostWithAuthor(post, getAuthor(client, post.authorId))
-                            PostWithComments(post, getComments(client, post.id))
+                            PostWithComments_Author(post, getComments(client, post.id),getAuthor(client, post.authorId))
                         }
                     }.awaitAll()
                 println(posts)
@@ -117,13 +116,9 @@ data class Author(
     val avatar: String,
 )
 
-data class PostWithComments(
+data class PostWithComments_Author(
     val post: Post,
     val comments: List<Comment>,
-)
-
-data class PostWithAuthor(
-    val post: Post,
     val author: Author,
 )
 
