@@ -32,7 +32,7 @@ fun main() {
 
                         val comments = async { getComments(client, post.id) }
                         val author = async { getAuthor(client, post.authorId) }
-                        PostWithCommentsAuthor(post, comments.await(), author.await())
+                        PostWithComments_Author(post, comments.await(), author.await())
                     }
                 println(posts)
             } catch (e: Exception) {
@@ -117,7 +117,7 @@ data class Author(
     val avatar: String,
 )
 
-data class PostWithCommentsAuthor(
+data class PostWithComments_Author(
     val post: Post,
     val comments: List<Comment>,
     val author: Author,
